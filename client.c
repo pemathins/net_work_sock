@@ -1,0 +1,44 @@
+// programming
+#include <netinet/in.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <unistd.h>
+
+#define PORT 6969
+#define SA struct sockaddr
+#define IP_ADDRESS "192.168.0.1"
+#define BUFFERMAX 55
+
+int checker(const char*, char*);
+int palandromic(const char*);
+
+int main(int argc, char* argv[])
+{
+	int server_fd, valread, valwrite;
+	struct sockaddr_in address;
+	int opt = 1;
+	int addrlen = sizeof(address);
+	char buffer[BUFFERMAX];
+	char* bufferMessage[BUFFERMAX];
+	printf("Enter a palandromic value: ");
+	scanf("%s",bufferMessage);
+	server_fd = socket(AF_INET, SOCK_STREAM, 0);
+
+	address.sin_family = AF_INET;
+	address.sin_addr.s_addr = INADDR_ANY;
+	address.sin_port = htons(PORT);
+
+	connect(server_fd,(SA*)&address,sizeof(address));
+
+	write(server_fd, bufferMessage, sizeof(bufferMessage));
+
+	valread = read(server_fd, buffer, BUFFERMAX);
+
+	printf("Response is : %s\n",buffer);
+
+	close(server_fd);
+
+	return 0;
+}
