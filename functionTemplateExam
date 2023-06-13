@@ -1,0 +1,218 @@
+int checker(const char* buffer,char* bufferMsg)
+{
+	//change the function as per the question in below condition
+	if(armstrong(buffer)==0)
+	{
+		strcpy(bufferMsg,"OK");
+		return 0;
+	}
+	else
+	{
+		strcpy(bufferMsg,"Error");
+		return 1;
+	}
+}
+
+int palandromic(const char* buffer)
+{
+	char* temp=(char*)malloc(sizeof(char)*BUFFERMAX);
+	for(int i = 0,j=strlen(buffer)-1; i < strlen(buffer); i++,j--)
+	{
+		temp[i] = buffer[j];
+	}
+	if(strcmp(buffer,temp)==0)
+	{
+		free(temp);
+		return 0;
+	}
+	return 1;
+}
+
+int cube(int x)
+{
+    return x*x*x;
+}
+
+int armstrong(const char* buffer)
+{
+	int sum=0, temp=0,exact=0,tens=1;
+	printf("%s\n",buffer);
+	for(int i=strlen(buffer)-1;i>=0;i--)
+	{
+	    if(buffer[i]>=48 && buffer[i]<=57)
+		    temp = ((int)buffer[i])-48;
+		else
+		    return -1;
+		exact += temp*tens;
+		sum += cube(temp);
+		printf("value : %c, sum : %d, exact : %d\n",buffer[i],sum,exact);
+		tens *= 10;
+		temp =0;
+	}
+	if(sum==exact)
+	return 0;
+	return -1;
+}
+
+int sumArray(char* buffer)
+{
+    char tempNumber[10];
+    int sum=0,count=0;
+    char* copyaddrvalue = buffer;
+    for(size_t i=0;i<strlen(buffer);i++)
+    {  
+        count++;
+        if(*(buffer+i)==' ' || i+1==strlen(buffer))
+        {
+            memcpy(tempNumber, copyaddrvalue, count);
+            count=0;
+            copyaddrvalue = buffer+i+1;
+            sum += atoi(tempNumber);
+            memset(tempNumber,0,10);     
+        }
+    }
+    printf("sum : %d\n",sum);
+    return sum;
+}
+
+//it takes a buffer (string value) and conversts int* arrays 
+//parameters buffer string vaue,splitAt char to split at, array an stack allocated array of int pointers and arrlen the length of the array also stack int pointer 
+int* intBuffer(char* buffer, char splitAt,int* array,int* arrlen)
+{
+    // char splitAt = 32;
+    size_t count =0,t=0;
+    charptr block[10];    
+    charptr rx;
+    void* temp = malloc(strlen(buffer)*sizeof(char));
+    char* address = (char*)temp;
+    rx = address;
+
+    memcpy(temp,buffer,strlen(buffer));
+    for(size_t i=0;i<strlen(buffer);i++)
+    {
+        char* r = (char*)(temp+i);
+        char x = (char)*r;
+        if(x==splitAt || i==strlen(buffer)-1)
+        {
+            memcpy(block,rx,count);
+            count = 0;
+            rx = (char*)(temp+i+1);
+            array[t] = atoi((const char*)block);
+            t++;
+        }
+        memset(block,0,10);
+        
+        count++;
+    }
+    *arrlen = t;
+    free(temp);
+    return array;
+}
+
+void sort(char* buffer,char* buffermsg)
+{
+    int array[45];
+    int l = strlen(buffer),count=0,arrlen=0;
+    char* tempptr = buffer;
+    char temp[5];
+
+    for(int i=0;i<l;i++)
+    {
+        count++;
+        if(*(buffer+i)==' ' || i+1==l)
+        {
+            
+            memcpy(temp,tempptr,count);
+            array[arrlen]=atoi(temp);
+            tempptr = (buffer+1+i);
+            arrlen++;
+            count=0;
+            memset(temp,0,5);
+        }
+    }
+    int i, j, var; 
+    for(i = 0; i <=arrlen; i++)    
+    { 
+      for(j = i+1; j <arrlen; j++)    
+        {    
+            if(*(array+j) < *(array+i))    
+            {    
+                var = *(array+i);    
+                *(array+i) = *(array+j);    
+                *(array+j) = var;     
+            }     
+        }     
+    }
+    for(i=0;i<arrlen;i++)
+    {
+        sprintf((buffermsg+strlen(buffermsg)),"%d ",array[i]);
+    }
+}
+void factorial(char* buffer,char* bufferout)
+{
+    int n = atoi(buffer),tot = 1;
+    for(int i =1;i<=n;i++)
+    {
+        tot*=i;
+        printf("%d> total%d\n",i,tot);
+    }
+    sprintf(bufferout,"%d",tot);
+}
+
+int sumArray(char* buffer)
+{
+    char tempNumber[10];
+    int sum=0,count=0;
+    char* copyaddrvalue = buffer;
+    for(size_t i=0;i<strlen(buffer);i++)
+    {  
+        count++;
+        if(*(buffer+i)==' ' || i+1==strlen(buffer))
+        {
+            memcpy(tempNumber, copyaddrvalue, count);
+            count=0;
+            copyaddrvalue = buffer+i+1;
+            // printf("temp -> %s\n",tempNumber);
+            sum += atoi(tempNumber);
+            memset(tempNumber,0,10);     
+        }
+    }
+    printf("sum : %d\n",sum);
+    return sum;
+}
+
+int charTointArrSum(char* buffer)
+{
+    char tempNumber[10];
+    int sum=0,count=0,arrlen=0;
+    int array[150];
+    char* copyaddrvalue = buffer;
+    for(size_t i=0;i<strlen(buffer);i++)
+    {  
+        count++;
+        if(*(buffer+i)==' ' || i+1==strlen(buffer))
+        {
+            memcpy(tempNumber, copyaddrvalue, count);
+            count=0;
+            copyaddrvalue = buffer+i+1;\
+            array[arrlen]=atoi(tempNumber);
+            arrlen++;
+            memset(tempNumber,0,10);     
+        }
+    }
+    sum = greatest(array,arrlen);
+    printf("sum : %d\n",sum);
+    return sum;
+}
+
+int greatest(int* array,int len)
+{
+    int max=0;
+    for(size_t i =0;i<len;i++)
+    {
+        if(max<array[i])
+        max=array[i];
+        printf("greatest : %d\n",max);
+    }
+    return max;
+}
